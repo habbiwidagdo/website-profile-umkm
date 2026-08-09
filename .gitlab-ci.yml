@@ -1,0 +1,54 @@
+stages:
+  - test
+  - deploy
+
+# ==========================================
+# STAGE 1: TESTING
+# ==========================================
+test_react_code:
+  stage: test
+  image: node:20-alpine
+  script:
+    - echo "Memulai pengujian kode React..."
+    - npm install
+    # Kita menggunakan proses build sebagai test dasar
+    # Jika kode ada error fatal, perintah ini akan gagal dan mencegah tahap deploy
+    - npm run build 
+    - echo "Pengujian selesai, kode aman untuk di-deploy!"
+  only:
+    - main
+
+# ==========================================
+# STAGE 2: DEPLOYMENT
+# ==========================================
+deploy_to_production:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - echo "Menyiapkan Kredensial SSH..."
+    - apk add --update openssh-client git
+    - eval $(ssh-agent -s)
+    # Membaca variabel SSH_PRIVATE_KEY dari GitLab
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    # Mendaftarkan IP server agar tidak muncul prompt (yes/no)
+    - ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+  script:
+    - echo "Menghubungkan ke Server Production ($SERVER_IP)..."
+    # Mengeksekusi perintah dari jarak jauh ke dalam CT production-host
+    - |
+      ssh $SSH_USER@$SERVER_IP "
+        cd /root/website-profile-umkm &&
+        echo 'Menarik kode terbaru dari GitLab...' &&
+        git pull origin main &&
+        echo 'Membuat ulang Docker Image...' &&
+        docker build -t react-profil:v1 . &&
+        echo 'Mematikan container lama (jika ada)...' &&
+        docker rm -f react-app || true &&
+        echo 'Menyalakan container baru...' &&
+        docker run -d --name react-app --restart always -p 80:80 react-profil:v1
+      "
+    - echo "Berhasil! Halaman website telah diperbarui."
+  only:
+    - main
