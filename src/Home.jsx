@@ -6,10 +6,10 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <section class="bg-center bg-no-repeat bg-black bg-blend-multiply">
+      <section class="bg-center bg-no-repeat bg-white bg-blend-multiply">
         <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
           <h1 class="mb-6 text-4xl font-bold tracking-tighter text-black md:text-5xl lg:text-6xl">
-            Kopi Emass
+            Kopi Emass 123
           </h1>
           <p class="mb-8 text-base font-normal text-black md:text-xl sm:px-16 lg:px-48">
             Here at Flowbite we focus on markets where technology, innovation,
