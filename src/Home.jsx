@@ -6,14 +6,17 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <section class="bg-center bg-no-repeat bg-black bg-blend-multiply">
+      <section class="bg-center bg-no-repeat bg-white bg-blend-multiply">
         <div class="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
           <h1 class="mb-6 text-4xl font-bold tracking-tighter text-black md:text-5xl lg:text-6xl">
-            Kopi Emass 123
+            Kopi Empat Lawang Emass
           </h1>
-          <p class="mb-8 text-base font-normal text-black md:text-xl sm:px-16 lg:px-48">
+          <p class="mb-8 text-base font-normal text-red md:text-xl sm:px-16 lg:px-48">
             Here at Flowbite we focus on markets where technology, innovation,
             and capital can unlock long-term value and drive economic growth.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+            euismod, nunc ut laoreet consectetur, nisl nunc consectetur nisi,
+            euismod aliquam nisl nunc euismod nisi.
           </p>
         </div>
       </section>
